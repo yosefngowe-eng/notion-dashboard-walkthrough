@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Your Daily Notion Dashboard — Loom Walkthrough</title>
+      <style>
+                * {
+                              margin: 0;
+                              padding: 0;
+                              box-sizing: border-box;
+                }
+
+                body {
+                              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                              background: #0a0a0a;
+                              color: #fff;
+                              overflow: hidden;
+                              height: 100vh;
+                }
+
+                .container {
+                              width: 100%;
+                              height: 100vh;
+                              display: flex;
+                              flex-direction: column;
+                }
+
+                .video-area {
+                              flex: 1;
+                              position: relative;
+                              background: #1a1a1a;
+                              display: flex;
+                              align-items: center;
+                              justify-content: center;
+                              overflow: hidden;
+                }
+
+                .notion-mockup {
+                              width: 100%;
+                              height: 100%;
+                              background: #0d0d0d;
+                              position: relative;
+                              display: flex;
+                              flex-direction: column;
+                              animation: fadeIn 0.5s ease-in;
+                }
+
+                @keyframes fadeIn {
+                              from { opacity: 0; }
+                              to { opacity: 1; }
+                }
+
+                .hero-section {
+                              width: 100%;
+                              height: 40%;
+                              background: linear-gradient(135deg, #ffd700 0%, #ff1493 25%, #00ffff 50%, #ff6b35 75%, #ff1493 100%);
+                              background-size: 400% 400%;
+                              position: relative;
+                              overflow: hidden;
+                              display: flex;
+                              align-items: center;
+                              justify-content: center;
+                }
+
+                .hero-content {
+                              width: 90%;
+                              height: 90%;
+                              background: linear-gradient(to right, rgba(100, 150, 200, 0.8), rgba(150, 120, 200, 0.8));
+                              border-radius: 12px;
+                              display: flex;
+                              align-items: center;
+                              justify-content: center;
+                              font-size: 48px;
+                              font-weight: bold;
+                              color: rgba(255, 255, 255, 0.9);
+                              text-align: center;
+                }
+
+                .title-section {
+                              padding: 30px;
+                              text-align: center;
+                              font-size: 36px;
+                              font-weight: 600;
+                              border-bottom: 1px solid #333;
+                }
+
+                .content-section {
+                              flex: 1;
+                              overflow-y: auto;
+                              padding: 30px;
+                              display: flex;
+                              flex-direction: column;
+                              gap: 20px;
+                }
+
+                .two-column {
+                              display: grid;
+                              grid-template-columns: 1fr 1fr;
+                              gap: 20px;
+                              width: 100%;
+                }
+
+                .card {
+                              background: #1a1a1a;
+                              border: 1px solid #333;
+                              border-radius: 8px;
+                              padding: 20px;
+                              min-height: 300px;
+                              display: flex;
+                              flex-direction: column;
+                              gap: 15px;
+                              transition: all 0.3s ease;
+                }
+
+                .card.left {
+                              border-left: 4px solid #4a90e2;
+                }
+
+                .card.right {
+                              border-left: 4px solid #d4a574;
+                }
+
+                .card-title {
+                              font-size: 20px;
+                              font-weight: 600;
+                              display: flex;
+                              gap: 10px;
+                              align-items: center;
+                }
+
+                .card-content {
+                              flex: 1;
+                              background: #0d0d0d;
+                              border-radius: 4px;
+                              padding: 15px;
+                              font-size: 12px;
+                              color: #999;
+                              overflow: hidden;
+                }
+
+                .calendar-grid {
+                              display: grid;
+                              grid-template-columns: repeat(7, 1fr);
+                              gap: 5px;
+                              margin-top: 10px;
+                }
+
+                .calendar-day {
+                              aspect-ratio: 1;
+                              background: #0d0d0d;
+                              border: 1px solid #333;
+                              border-radius: 4px;
+                              display: flex;
+                              align-items: center;
+                              justify-content: center;
+                              font-size: 10px;
+                              transition: all 0.2s ease;
+                }
+
+                .calendar-day.highlight {
+                              background: #ff4444;
+                              border-color: #ff6666;
+                              font-weight: bold;
+                              box-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+                }
+
+                .full-width-card {
+                              background: #1a1a1a;
+                              border: 1px solid #333;
+                              border-left: 4px solid #e85d75;
+                              border-radius: 8px;
+                              padding: 20px;
+                              transition: all 0.3s ease;
+                }
+
+                .full-width-card .card-title {
+                              margin-bottom: 15px;
+                }
+
+                .table-mock {
+                              width: 100%;
+                              border-collapse: collapse;
+                              font-size: 12px;
+                }
+
+                .table-mock th {
+                              background: #0d0d0d;
+                              padding: 10px;
+                              text-align: left;
+                              border-bottom: 1px solid #333;
+                              font-weight: 600;
+                }
+
+                .table-mock td {
+                              padding: 10px;
+                              border-bottom: 1px solid #2a2a2a;
+                }
+
+                .table-mock tr {
+                              transition: all 0.2s ease;
+                }
+
+                .table-mock tr:hover {
+                              background: #161616;
+                }
+
+                .controls {
+                              display: flex;
+                              justify-content: space-between;
+                              align-items: center;
+                              padding: 20px 30px;
+                              background: #0d0d0d;
+                              border-top: 1px solid #333;
+                              gap: 15px;
+                }
+
+                .timeline {
+                              flex: 1;
+                              height: 6px;
+                              background: #333;
+                              border-radius: 3px;
+                              overflow: hidden;
+                              cursor: pointer;
+                              position: relative;
+                }
+
+                .timeline-progress {
+                              height: 100%;
+                              background: linear-gradient(90deg, #ff1493, #00ffff);
+                              width: 0%;
+                              transition: width 0.1s linear;
+                              border-radius: 3px;
+                }
+
+                .time-display {
+                              font-size: 12px;
+                              color: #999;
+                              min-width: 50px;
+                              text-align: right;
+                }
+
+                .button-group {
+                              display: flex;
+                              gap: 10px;
+                }
+
+                button {
+                              background: #ff1493;
+                              color: white;
+                              border: none;
+                              padding: 8px 16px;
+                              border-radius: 4px;
+                              font-size: 12px;
+                              font-weight: 600;
+                              cursor: pointer;
+                              transition: all 0.2s;
+                }
+
+                button:hover:not(:disabled) {
+                              background: #ff3fb8;
+                              transform: scale(1.05);
+                }
+
+                button:disabled {
+                              background: #666;
+                              cursor: not-allowed;
+                              transform: scale(1);
+                }
+
+                .voice-box {
+                              position: fixed;
+                              bottom: 100px;
+                              right: 30px;
+                              background: rgba(0, 0, 0, 0.95);
+                              border: 2px solid #ff1493;
+                              border-radius: 12px;
+                              padding: 15px 20px;
+                              max-width: 350px;
+                              font-size: 14px;
+                              line-height: 1.6;
+                              box-shadow: 0 10px 40px rgba(255, 20, 147, 0.3);
+                              z-index: 1000;
+                              animation: slideIn 0.3s ease;
+                }
+
+                @keyframes slideIn {
+                              from {
+                                                opacity: 0;
+                                                transform: translateY(20px);
+                              }
+                              to {
+                                                opacity: 1;
+                                                transform: translateY(0);
+                              }
+                }
+
+                .voice-box.hidden {
+                              display: none;
+                }
+
+                .timestamp {
+                              font-size: 11px;
+                              color: #666;
+                              margin-top: 8px;
+                              border-top: 1px solid #333;
+                              padding-top: 8px;
+                }
+
+                .highlight-glow {
+                              box-shadow: 0 0 30px rgba(255, 20, 147, 0.8), inset 0 0 20px rgba(255, 20, 147, 0.3) !important;
+                              border-color: #ff1493 !important;
+                }
+            </style>
+  </head>
+  <body>
+        <div class="container">
+                  <div class="video-area">
+                                <div class="notion-mockup" id="mockup">
+                                                  <div class="hero-section" id="heroSection">
+                                                                        <div class="hero-content">Home Photo</div>div>
+                                                  </div>div>
+                                                  <div class="title-section">Yosef Ngowe — Owner Page</div>div>
+                                                  <div class="content-section">
+                                                                        <div class="two-column">
+                                                                                                  <div class="card left">
+                                                                                                                                <div class="card-title">📅 Calendar</div>div>
+                                                                                                                                <div class="card-content">
+                                                                                                                                                                  <div style="margin-bottom: 10px; font-weight: 600;">Meetings</div>div>
+                                                                                                                                                                  <div class="calendar-grid" id="calendarGrid"></div>div>
+                                                                                                                                  </div>div>
+                                                                                                    </div>div>
+                                                                                                  <div class="card right">
+                                                                                                                                <div class="card-title">💰 Financial graphs</div>div>
+                                                                                                                                <div class="card-content">
+                                                                                                                                                                  <div style="margin-bottom: 10px; font-weight: 600;">AC • Finance (Rev/Costs/KPIs)</div>div>
+                                                                                                                                                                  <div style="height: 80px; background: #161616; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #666;">
+                                                                                                                                                                                                        Chart Area
+                                                                                                                                                                                                    </div>div>
+                                                                                                                                  </div>div>
+                                                                                                    </div>div>
+                                                                        </div>div>
+                                                                        <div class="full-width-card">
+                                                                                                  <div class="card-title">🍎 Apps (Gallery)</div>div>
+                                                                                                  <table class="table-mock">
+                                                                                                                                <thead>
+                                                                                                                                                                  <tr>
+                                                                                                                                                                                                        <th>Name</th>
+                                                                                                                                                                    <th>App Page</th>
+                                                                                                                                                                    <th>Area</th>
+                                                                                                                                                                    <th>Blurb</th>
+                                                                                                                                                                    </tr>
+                                                                                                                                  </thead>
+                                                                                                                              <tbody id="appsTable">
+                                                                                                                                  <tr><td>Media</td><td>notion.so/...</td><td>Content</td><td>Pipeline, packages, delivery</td></tr>
+                                                                                                                                  <tr><td>Tasks</td>td><td>notion.so/...</td>td><td>Ops</td>td><td>Weekly execution & blockers</td>td></tr>
+                                                                                                                                  <tr><td>CRM</td><td>notion.so/...</td><td>People</td><td>Leads, partners, relationships</td></tr>
+                                                                                                                d                  <tr><td>Decisions</td>td><td>notion.so/...</td>td><td>Governance</td>td><td>Decision log and follow-ups</td>td></tr>
+                                                                                                                                  <tr><td>Comms Hub</td><td>notion.so/...</td><td>Ops</td><td>Templates, replies, announcementds</td></tr>
+                                                                                                                                  <tr><td>Finance</td>td><td>notion.so/...</td>td><td>Money</td>td><td>Revenue, costs, profit, charts</td>tdd></tr>
+                                                                                                                                  <tr><td>Calendar</td><td>notion.so/...</td><td>Ops</td><td>Meetings calendar + schedule</td></tr>
+                                                                                                                                </tbody>tbody>
+                                                                                                    </table>table>
+                                                                        </div>div>
+                                                  </div>div>
+                                </div>div>
+                  </div>div>
+                
+                <div class="voice-box hidden" id="voiceBox"></div>div>
+                <div class="controls">
+                            <button id="prevBtn" onclick="previousSegment()">← Previous</button>button>
+                            <div class="timeline">
+                                            <div class="timeline-progress" id="progress"></div>div>
+                            </div>div>
+                            <div class="time-display"><span id="currentTime">0:00</span>span> / <span id="totalTime">2:00</span>span></div>div>
+                            <div class="button-group">
+                                            <button id="playBtn" onclick="togglePlay()">▶ Play</button>button>
+                                            <button id="nextBtn" onclick="nextSegment()">Next →</button>button>
+                            </div>div>
+                </div>div>
+        </div>div>
+  
+      <script>
+                const scenes = [
+                  {
+                                    time: 0,
+                                    duration: 15,
+                                    voice: "Hey—welcome to the team. This is your new daily driver: the Owner Page. You're gonna live here. It's three things: meetings, money, and workflows. Let's go.",
+                                    actions: [
+                                      { type: 'highlight', target: '#heroSection', duration: 15, at: 0 }
+                                                      ]
+                  },
+                  {
+                                    time: 15,
+                                    duration: 20,
+                                    voice: "Left side, always. This is the 📅 Calendar. Meetings. If it's not on here, it didn't happen. Click it, check your week, see what's coming.",
+                                    actions: [
+                                      { type: 'highlight', target: '.card.left', duration: 20, at: 0 }
+                                                      ]
+                  },
+                  {
+                                    time: 35,
+                                    duration: 20,
+                                    voice: "Right side is money. The 💰 Financial graphs. Revenue, costs, KPIs—if the company's healthy or dying, it's here. One quick glance.",
+                                    actions: [
+                                      { type: 'highlight', target: '.card.right', duration: 20, at: 0 }
+                                                      ]
+                  },
+                  {
+                                    time: 55,
+                                    duration: 65,
+                                    voice: "Scroll down. This is the Apps gallery. It's your launch pad. Media, Tasks, CRM, Decisions, Comms, Finance again, Calendar—pick what you need and go. That's it. One page. Three sections. Meetings, money, workflows. Every morning, you start here. And remember: if it's not on the calendar, it's not real.",
+                                    actions: [
+                                      { type: 'scroll', target: '.content-section', amount: 150, duration: 5, at: 0 },
+                                      { type: 'highlight', target: '.full-width-card', duration: 40, at: 5 }
+                                                      ]
+                  }
+                          ];
+
+                let isPlaying = false;
+                let currentScene = 0;
+                let sceneStartTime = 0;
+                let totalDuration = 120;
+
+                function generateCalendar() {
+                              const grid = document.getElementById('calendarGrid');
+                              const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
+                              days.forEach(day => {
+                                                const header = document.createElement('div');
+                                                header.style.fontWeight = '600';
+                                                header.style.textAlign = 'center';
+                                                header.textContent = day;
+                                                header.style.fontSize = '11px';
+                                                header.style.color = '#666';
+                                                grid.appendChild(header);
+                              });
+
+                              for (let i = 28; i <= 31; i++) {
+                                                const day = document.createElement('div');
+                                                day.className = 'calendar-day';
+                                                day.textContent = i;
+                                                grid.appendChild(day);
+                              }
+
+                              for (let i = 1; i <= 10; i++) {
+                                                const day = document.createElement('div');
+                                                day.className = 'calendar-day';
+                                                if (i === 1) {
+                                                                      day.classList.add('highlight');
+                                                }
+                                                day.textContent = i;
+                                                grid.appendChild(day);
+                              }
+                }
+
+                function showVoice(text, timestamp) {
+                              const box = document.getElementById('voiceBox');
+                              box.innerHTML = text + `<div class="timestamp">${timestamp}</div>`;
+                              box.classList.remove('hidden');
+                }
+
+                function highlight(selector, duration) {
+                              const el = document.querySelector(selector);
+                              if (el) {
+                                                el.classList.add('highlight-glow');
+                                                setTimeout(() => {
+                                                                      el.classList.remove('highlight-glow');
+                                                }, duration * 1000);
+                              }
+                }
+
+                function scroll(selector, amount, duration) {
+                              const el = document.querySelector(selector);
+                              if (el) {
+                                                const start = el.scrollTop;
+                                                const startTime = Date.now();
+
+                                                const animate = () => {
+                                                                      const elapsed = (Date.now() - startTime) / 1000;
+                                                                      const progress = Math.min(elapsed / duration, 1);
+                                                                      el.scrollTop = start + (amount * progress);
+
+                                                                      if (progress < 1) {
+                                                                                                requestAnimationFrame(animate);
+                                                                      }
+                                                };
+                                                animate();
+                              }
+                }
+
+                function executeActions(scene, elapsed) {
+                              scene.actions?.forEach(action => {
+                                                const actionTime = (action.at || 0);
+
+                                                if (elapsed >= actionTime && elapsed < actionTime + 0.1) {
+                                                                      switch (action.type) {
+                                                                          case 'highlight':
+                                                                                                      highlight(action.target, action.duration || scene.duration);
+                                                                                                      break;
+                                                                          case 'scroll':
+                                                                                                      scroll(action.target, action.amount, action.duration || 5);
+                                                                                                      break;
+                                                                      }
+                                                }
+                              });
+                }
+
+                function formatTime(seconds) {
+                              const mins = Math.floor(seconds / 60);
+                              const secs = Math.floor(seconds % 60);
+                              return `${mins}:${secs.toString().padStart(2, '0')}`;
+                }
+
+                function updateProgress(currentTime) {
+                              const progress = (currentTime / totalDuration) * 100;
+                              document.getElementById('progress').style.width = progress + '%';
+                              document.getElementById('currentTime').textContent = formatTime(currentTime);
+                }
+
+                function togglePlay() {
+                              isPlaying = !isPlaying;
+                              const btn = document.getElementById('playBtn');
+                              btn.textContent = isPlaying ? '⏸ Pause' : '▶ Play';
+
+                              if (isPlaying) {
+                                                sceneStartTime = Date.now() - (scenes[currentScene].time * 1000);
+                                                animate();
+                              }
+                }
+
+                function nextSegment() {
+                              if (currentScene < scenes.length - 1) {
+                                                currentScene++;
+                                                updateScene();
+                              }
+                }
+
+                function previousSegment() {
+                              if (currentScene > 0) {
+                                                currentScene--;
+                                                updateScene();
+                              }
+                }
+
+                function updateScene() {
+                              const scene = scenes[currentScene];
+                              showVoice(scene.voice, `${formatTime(scene.time)} – ${formatTime(scene.time + scene.duration)}`);
+
+                              document.querySelectorAll('.highlight-glow').forEach(el => {
+                                                el.classList.remove('highlight-glow');
+                              });
+                }
+
+                function animate() {
+                              if (!isPlaying) return;
+
+                              const currentTime = (Date.now() - sceneStartTime) / 1000;
+                              updateProgress(currentTime);
+
+                              let foundScene = null;
+                              for (let i = scenes.length - 1; i >= 0; i--) {
+                                                if (currentTime >= scenes[i].time) {
+                                                                      foundScene = scenes[i];
+                                                                      currentScene = i;
+                                                                      break;
+                                                }
+                              }
+
+                              if (foundScene) {
+                                                const elapsed = currentTime - foundScene.time;
+
+                                                if (elapsed >= foundScene.duration) {
+                                                                      if (currentScene < scenes.length - 1) {
+                                                                                                currentScene++;
+                                                                                                sceneStartTime = Date.now() - (scenes[currentScene].time * 1000);
+                                                                                                updateScene();
+                                                                      } else {
+                                                                                                isPlaying = false;
+                                                                                                document.getElementById('playBtn').textContent = '▶ Play';
+                                                                      }
+                                                } else {
+                                                                      executeActions(foundScene, elapsed);
+                                                }
+                              }
+
+                              if (isPlaying) {
+                                                requestAnimationFrame(animate);
+                              }
+                }
+
+                generateCalendar();
+                updateScene();
+      </script>
+  </body>
+</html>html>
+      </script></td></td></tr></tr></td></td></tr></tr></td></td></tr></tr></td></td></tr></th></th>
+                                                                                                                                                                  </tr>
+                                                                                                                                </thead>
+  </body>
+      </style></title>
+  </head>

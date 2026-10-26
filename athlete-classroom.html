@@ -1,0 +1,406 @@
+<title>Athlete Classroom Game Hub Walkthrough</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+  /* Layout: a film-room player. Left = the Notion Game Hub mockup (the "screen"), right = narration + chapters. Controls pinned under the screen. */
+  :root {
+    --bg: #0b0e13;
+    --screen: #11151c;
+    --panel: #161b24;
+    --line: #26303f;
+    --fg: #eef1f6;
+    --muted: #9aa6b8;
+    --accent: #f5b400;        /* field-light amber */
+    --accent-ink: #1a1200;
+    --good: #3dd68c;
+    --warn: #ffb347;
+    --crit: #ff5e6c;
+    --gate: #8b7cff;
+    --font-display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+    --font-body: "Source Sans 3", "Segoe UI", Roboto, sans-serif;
+    --font-mono: "JetBrains Mono", "SF Mono", Menlo, monospace;
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f3f1ec; --screen: #ffffff; --panel: #faf8f3; --line: #d9d4c8;
+      --fg: #161a21; --muted: #5d6675; --accent: #b87d00; --accent-ink: #ffffff;
+      --good: #1f9d5c; --warn: #b96d00; --crit: #c8303d; --gate: #5a4bd6;
+      color-scheme: light;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #f3f1ec; --screen: #ffffff; --panel: #faf8f3; --line: #d9d4c8;
+    --fg: #161a21; --muted: #5d6675; --accent: #b87d00; --accent-ink: #ffffff;
+    --good: #1f9d5c; --warn: #b96d00; --crit: #c8303d; --gate: #5a4bd6;
+    color-scheme: light;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+    padding-block: 20px 28px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  h1, h2, h3 { margin: 0; font-family: var(--font-display); text-wrap: balance; letter-spacing: 0.01em; }
+  a { color: var(--accent); }
+  button { font: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .wrap { max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+
+  .masthead { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .masthead h1 { font-size: clamp(28px, 4vw, 40px); font-weight: 800; text-transform: uppercase; }
+  .masthead h1 span { color: var(--accent); }
+  .eyebrow { font-family: var(--font-mono); font-size: 12px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .player { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: start; }
+  @media (max-width: 860px) { .player { grid-template-columns: minmax(0, 1fr); } }
+
+  /* ---------- the screen (Notion mockup) ---------- */
+  .screen {
+    background: var(--screen); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; min-width: 0;
+    display: flex; flex-direction: column;
+  }
+  .screen-bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--line); font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .screen-bar .dots { display: flex; gap: 6px; }
+  .screen-bar .dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); display: block; }
+  .screen-bar .url { margin-left: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .hub { height: 560px; overflow-y: auto; scroll-behavior: smooth; padding: 20px 22px 28px; display: flex; flex-direction: column; gap: 18px; }
+  @media (max-width: 860px) { .hub { height: 460px; } }
+  @media (prefers-reduced-motion: reduce) { .hub { scroll-behavior: auto; } }
+
+  .hub-title { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .hub-title h2 { font-size: 30px; font-weight: 800; text-transform: uppercase; }
+  .hub-title .tag { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+
+  .section { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; background: var(--panel); transition: box-shadow .3s, border-color .3s; scroll-margin-top: 12px; }
+  .section.live { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent), 0 12px 40px -18px var(--accent); }
+  .section-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+  .section-head h3 { font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }
+  .section-head .step { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+
+  .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  @media (max-width: 640px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .tile { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--screen); min-width: 0; }
+  .tile .label { font-size: 12px; color: var(--muted); line-height: 1.3; }
+  .tile .num { font-family: var(--font-display); font-size: 34px; font-weight: 800; line-height: 1.05; font-variant-numeric: tabular-nums; }
+  .tile .num small { font-size: 16px; color: var(--muted); font-weight: 600; }
+  .tile .bar { height: 4px; background: var(--line); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+  .tile .bar i { display: block; height: 100%; background: var(--accent); width: 0%; }
+
+  .todo { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .todo li { display: flex; gap: 10px; align-items: flex-start; }
+  .todo .box { width: 18px; height: 18px; border: 2px solid var(--muted); border-radius: 4px; flex: none; margin-top: 3px; }
+  .todo .meta { color: var(--muted); font-size: 13px; }
+  .done-line { margin-top: 10px; font-size: 13px; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 8px; }
+  .done-line b { color: var(--fg); }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 520px; }
+  th { text-align: left; font-weight: 600; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+  td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  .pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; border: 1px solid var(--line); white-space: nowrap; }
+  .pill.idea { color: var(--muted); }
+  .pill.scripted { color: var(--warn); border-color: var(--warn); }
+  .pill.filmed { color: var(--accent); border-color: var(--accent); }
+  .pill.edited { color: var(--gate); border-color: var(--gate); }
+  .pill.posted { color: var(--good); border-color: var(--good); }
+  .stages { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+  .stages span { border: 1px solid var(--line); border-radius: 4px; padding: 2px 6px; }
+  .stages em { font-style: normal; align-self: center; }
+
+  .gates { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  @media (max-width: 760px) { .gates { grid-template-columns: minmax(0, 1fr); } }
+  .gate { border-left: 3px solid var(--gate); background: var(--screen); border-radius: 0 8px 8px 0; padding: 10px 12px; min-width: 0; }
+  .gate h4 { margin: 0 0 4px; font-family: var(--font-display); font-size: 17px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; }
+  .gate .state { font-size: 12px; font-weight: 700; }
+  .gate .state.locked { color: var(--crit); }
+  .gate .state.open { color: var(--good); }
+  .gate dl { margin: 6px 0 0; font-size: 12.5px; display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; }
+  .gate dt { color: var(--muted); }
+  .gate dd { margin: 0; }
+
+  .links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  @media (max-width: 560px) { .links { grid-template-columns: minmax(0, 1fr); } }
+  .links a { display: flex; flex-direction: column; gap: 2px; text-decoration: none; color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--screen); min-width: 0; }
+  .links a:hover { border-color: var(--accent); }
+  .links a b { font-weight: 700; }
+  .links a span { font-size: 12.5px; color: var(--muted); }
+
+  /* ---------- controls ---------- */
+  .controls { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-top: 1px solid var(--line); flex-wrap: wrap; }
+  .controls .btn { background: transparent; color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 14px; cursor: pointer; font-weight: 600; }
+  .controls .btn:hover { border-color: var(--accent); }
+  .controls .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); min-width: 92px; }
+  .controls .btn:disabled { opacity: .4; cursor: default; }
+  .timeline { flex: 1 1 160px; height: 8px; background: var(--line); border-radius: 4px; cursor: pointer; position: relative; min-width: 120px; }
+  .timeline .prog { position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--accent); border-radius: 4px; }
+  .timeline .marks { position: absolute; inset: 0; }
+  .timeline .marks i { position: absolute; top: -3px; width: 2px; height: 14px; background: var(--bg); }
+  .time { font-family: var(--font-mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* ---------- side panel ---------- */
+  .side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .caption { background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 10px; padding: 14px 16px; min-height: 150px; }
+  .caption .who { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; display: flex; justify-content: space-between; gap: 8px; }
+  .caption p { margin: 0; font-size: 16px; line-height: 1.5; }
+  .chapters { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .chapters li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 10px; padding: 9px 12px; cursor: pointer; border-bottom: 1px solid var(--line); background: var(--panel); }
+  .chapters li:last-child { border-bottom: 0; }
+  .chapters li:hover { background: var(--screen); }
+  .chapters li.live { background: var(--screen); box-shadow: inset 3px 0 0 var(--accent); }
+  .chapters .t { font-family: var(--font-mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .chapters .n { font-weight: 600; }
+  .chapters .d { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+  .note { font-size: 12.5px; color: var(--muted); }
+  .note b { color: var(--fg); }
+  .kbd { font-family: var(--font-mono); font-size: 11px; border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <div class="eyebrow">Loom-style walkthrough · 2:30</div>
+      <h1>Athlete Classroom <span>Game Hub</span></h1>
+    </div>
+    <div class="note">Press <span class="kbd">Space</span> to play, <span class="kbd">←</span> <span class="kbd">→</span> to jump chapters.</div>
+  </header>
+
+  <div class="player">
+    <div class="screen">
+      <div class="screen-bar">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="url">notion · Athlete Classroom TL &amp; Notion Hub › 🎬 Content HQ</div>
+      </div>
+
+      <div class="hub" id="hub">
+        <div class="hub-title">
+          <h2>Athlete Classroom — Game Hub</h2>
+          <span class="tag">snapshot: Content HQ, 2-week sprint</span>
+        </div>
+
+        <section class="section" id="s-score">
+          <div class="section-head"><h3>Scoreboard</h3><span class="step">1 / 5</span></div>
+          <div class="tiles">
+            <div class="tile"><div class="label">Trial Reel sets posted</div><div class="num">0<small> / 4</small></div><div class="bar"><i style="width:0%"></i></div></div>
+            <div class="tile"><div class="label">Long-form episodes shipped</div><div class="num">0<small> / 1</small></div><div class="bar"><i style="width:0%"></i></div></div>
+            <div class="tile"><div class="label">Modules outlined</div><div class="num">0<small> / 3</small></div><div class="bar"><i style="width:0%"></i></div></div>
+            <div class="tile"><div class="label">Footage folders live</div><div class="num">0<small> / 12</small></div><div class="bar"><i style="width:0%"></i></div></div>
+          </div>
+        </section>
+
+        <section class="section" id="s-today">
+          <div class="section-head"><h3>Do Today (Top 3)</h3><span class="step">2 / 5</span></div>
+          <ul class="todo">
+            <li><span class="box"></span><div>Write the one-sentence ISE arc line. <span class="meta">10 min · whiteboard</span></div></li>
+            <li><span class="box"></span><div>Pick the 3 long-form series and a cadence you can hit. <span class="meta">decide in Series &amp; Arcs</span></div></li>
+            <li><span class="box"></span><div>Create the 12 Footage Library folders and drop the first 10 clips in. <span class="meta">drive</span></div></li>
+          </ul>
+          <div class="done-line"><b>Done looks like:</b> three boxes checked, Series &amp; Arcs shows 3 Active arcs with a Chase line, Scoreboard moves off zero.</div>
+        </section>
+
+        <section class="section" id="s-quest">
+          <div class="section-head"><h3>Quest Log</h3><span class="step">3 / 5</span></div>
+          <div class="stages"><span>Idea</span><em>→</em><span>Scripted</span><em>→</em><span>Filmed</span><em>→</em><span>Edited</span><em>→</em><span>Posted</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Quest</th><th>Arc</th><th>Stage</th><th>Owner</th><th>Due</th></tr></thead>
+              <tbody>
+                <tr><td>Pinned intro video ("new here? this is what I'm chasing")</td><td>Channel</td><td><span class="pill scripted">Scripted</span></td><td>Yosef</td><td>Week 1</td></tr>
+                <tr><td>Trial Reel set #1 — clippers skips (3 versions)</td><td>Athlete</td><td><span class="pill filmed">Filmed</span></td><td>Yosef</td><td>Week 1</td></tr>
+                <tr><td>Road to Olympic Trials — Ep. 1</td><td>Athlete</td><td><span class="pill idea">Idea</span></td><td>Yosef</td><td>Week 2</td></tr>
+                <tr><td>Module 1 outline (first paid product)</td><td>Craft</td><td><span class="pill idea">Idea</span></td><td>Yosef</td><td>Week 2</td></tr>
+                <tr><td>NIL series Ep. 1 — shoot date on calendar</td><td>Founder</td><td><span class="pill idea">Idea</span></td><td>Yosef</td><td>Week 2</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section" id="s-boss">
+          <div class="section-head"><h3>Boss Fights (Gates)</h3><span class="step">4 / 5</span></div>
+          <div class="gates">
+            <div class="gate">
+              <h4>Consent gate</h4>
+              <div class="state locked">LOCKED · blocks external posting</div>
+              <dl><dt>Owner</dt><dd>Program Director</dd><dt>Evidence</dt><dd>Signed media waivers covering Athlete Classroom use</dd><dt>Done looks like</dt><dd>Every clip with an ISE player is tagged “cleared” before it leaves the drive</dd></dl>
+            </div>
+            <div class="gate">
+              <h4>Cadence lock</h4>
+              <div class="state locked">LOCKED · blocks arcs 2 and 3</div>
+              <dl><dt>Owner</dt><dd>Yosef</dd><dt>Evidence</dt><dd>Edit + script time booked at 2× film time</dd><dt>Done looks like</dt><dd>Road to Olympic Trials Ep. 1 is live; the other two arcs ride behind it</dd></dl>
+            </div>
+            <div class="gate">
+              <h4>Sponsor gate</h4>
+              <div class="state locked">LOCKED · blocks spend</div>
+              <dl><dt>Owner</dt><dd>Yosef</dd><dt>Evidence</dt><dd>One signed local sponsor</dd><dt>Done looks like</dt><dd>Content ops funded outside ISE money, said on camera</dd></dl>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="s-links">
+          <div class="section-head"><h3>Quick Links</h3><span class="step">5 / 5</span></div>
+          <div class="links">
+            <a href="https://app.notion.com/p/3c815fffbb5e81c78bf2ca57f2819fba" target="_blank" rel="noopener"><b>🎬 Content HQ</b><span>DO FIRST, Scoreboard, pillars, 2-week sprint</span></a>
+            <a href="https://app.notion.com/p/28615fffbb5e806baffcc59b7498f9ff" target="_blank" rel="noopener"><b>🏛 TL &amp; Notion Hub</b><span>OKRs, ventures, team, finance</span></a>
+            <a href="https://app.notion.com/p/dda5dae70e9246b5bcab3eb1f3042e95" target="_blank" rel="noopener"><b>📚 Series &amp; Arcs</b><span>What we're chasing. No chase, no series.</span></a>
+            <a href="https://app.notion.com/p/b1200cdaa52e400ea4fbcea2f75c7ade" target="_blank" rel="noopener"><b>🎞 Content Pipeline</b><span>Idea → Scripted → Filmed → Edited → Posted</span></a>
+            <a href="https://app.notion.com/p/37910a6cce0f461a88cd1b1416b3093c" target="_blank" rel="noopener"><b>📁 Footage Library</b><span>12 folders by shot type, mirrored on the drive</span></a>
+          </div>
+        </section>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="prevBtn" type="button" aria-label="Previous chapter">← Prev</button>
+        <button class="btn primary" id="playBtn" type="button">▶ Play</button>
+        <button class="btn" id="nextBtn" type="button" aria-label="Next chapter">Next →</button>
+        <div class="timeline" id="timeline" role="slider" aria-label="Playback position" aria-valuemin="0" aria-valuemax="150" aria-valuenow="0" tabindex="0">
+          <div class="prog" id="prog"></div>
+          <div class="marks" id="marks"></div>
+        </div>
+        <div class="time"><span id="cur">0:00</span> / <span id="tot">2:30</span></div>
+      </div>
+    </div>
+
+    <aside class="side">
+      <div class="caption">
+        <div class="who"><span>Narration</span><span id="capTime">0:00 – 0:15</span></div>
+        <p id="capText"></p>
+      </div>
+      <ol class="chapters" id="chapters"></ol>
+      <div class="note"><b>Numbers are the Aug 26 sprint snapshot.</b> They update from Content HQ, not from this page. No athlete or family names appear here on purpose.</div>
+    </aside>
+  </div>
+</div>
+
+<script>
+  const scenes = [
+    { t: 0,   d: 15, target: null,       name: 'Welcome',
+      voice: "Welcome to the team. This is the Athlete Classroom Game Hub. One page, five sections, runnable in 30 seconds: Scoreboard, Do Today, Quest Log, Boss Fights, Quick Links. Let's go." },
+    { t: 15,  d: 25, target: '#s-score', name: 'Scoreboard',
+      voice: "Top of the page is the Scoreboard. Four numbers, nothing else. Trial Reel sets, long-form episodes, modules outlined, footage folders live. If these don't move this sprint, nothing else matters. Right now they're all at zero. That's the point of the sprint." },
+    { t: 40,  d: 25, target: '#s-today', name: 'Do Today',
+      voice: "Below it, Do Today. Three boxes, max. Each one is a micro-step with a time and a place. Read the Done-looks-like line before you start, so you know when to stop. Open box means not done. Checkmark means done. No in-between." },
+    { t: 65,  d: 30, target: '#s-quest', name: 'Quest Log',
+      voice: "The Quest Log is the Content Pipeline, filtered to this sprint. Every card moves left to right: Idea, Scripted, Filmed, Edited, Posted. Every quest belongs to an Arc, and every Arc has a Chase. No chase, no series. If you're editing and your card still says Idea, fix the card first." },
+    { t: 95,  d: 30, target: '#s-boss',  name: 'Boss Fights',
+      voice: "Boss Fights are gates. Binary. Locked means downstream work stops. The Consent gate blocks anything with an ISE player going external until waivers are confirmed. The Cadence lock means Road to Olympic Trials ships before the other two arcs. The Sponsor gate means we don't spend against a sponsor until one is signed. Each gate has one owner and one piece of evidence." },
+    { t: 125, d: 25, target: '#s-links', name: 'Quick Links',
+      voice: "Last, Quick Links. Content HQ for the sprint, the TL and Notion Hub for the company view, then Series and Arcs, the Content Pipeline, and the Footage Library. That's the whole page. Every morning: Scoreboard, Do Today, go. If it's not on the Scoreboard, it isn't real." }
+  ];
+  const TOTAL = scenes[scenes.length - 1].t + scenes[scenes.length - 1].d;
+
+  const hub = document.getElementById('hub');
+  const capText = document.getElementById('capText');
+  const capTime = document.getElementById('capTime');
+  const prog = document.getElementById('prog');
+  const cur = document.getElementById('cur');
+  const tot = document.getElementById('tot');
+  const playBtn = document.getElementById('playBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const timeline = document.getElementById('timeline');
+  const chaptersEl = document.getElementById('chapters');
+  const marksEl = document.getElementById('marks');
+
+  let playing = false;
+  let clock = 0;           // seconds into the walkthrough
+  let lastTick = 0;
+  let activeIdx = -1;
+  let raf = 0;
+
+  const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+  tot.textContent = fmt(TOTAL);
+  timeline.setAttribute('aria-valuemax', String(TOTAL));
+
+  scenes.forEach((s, i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="t">${fmt(s.t)}</span><span class="n">${s.name}</span><span class="d">${s.d}s</span>`;
+    li.addEventListener('click', () => { seek(s.t); });
+    chaptersEl.appendChild(li);
+    if (i > 0) {
+      const m = document.createElement('i');
+      m.style.left = (s.t / TOTAL * 100) + '%';
+      marksEl.appendChild(m);
+    }
+  });
+
+  function sceneIndexAt(time) {
+    for (let i = scenes.length - 1; i >= 0; i--) if (time >= scenes[i].t) return i;
+    return 0;
+  }
+
+  function showScene(i) {
+    if (i === activeIdx) return;
+    activeIdx = i;
+    const s = scenes[i];
+    capText.textContent = s.voice;
+    capTime.textContent = `${fmt(s.t)} – ${fmt(s.t + s.d)}`;
+    document.querySelectorAll('.section.live').forEach(el => el.classList.remove('live'));
+    [...chaptersEl.children].forEach((li, k) => li.classList.toggle('live', k === i));
+    if (s.target) {
+      const el = document.querySelector(s.target);
+      el.classList.add('live');
+      el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    } else {
+      hub.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    prevBtn.disabled = i === 0;
+    nextBtn.disabled = i === scenes.length - 1;
+  }
+
+  function render() {
+    prog.style.width = (clock / TOTAL * 100) + '%';
+    cur.textContent = fmt(clock);
+    timeline.setAttribute('aria-valuenow', String(Math.floor(clock)));
+    showScene(sceneIndexAt(clock));
+  }
+
+  function tick(now) {
+    if (!playing) return;
+    clock += (now - lastTick) / 1000;
+    lastTick = now;
+    if (clock >= TOTAL) { clock = TOTAL; render(); stop(); return; }
+    render();
+    raf = requestAnimationFrame(tick);
+  }
+
+  function play() {
+    if (clock >= TOTAL) clock = 0;
+    playing = true;
+    playBtn.textContent = '⏸ Pause';
+    lastTick = performance.now();
+    raf = requestAnimationFrame(tick);
+  }
+  function stop() {
+    playing = false;
+    playBtn.textContent = clock >= TOTAL ? '↺ Replay' : '▶ Play';
+    cancelAnimationFrame(raf);
+  }
+  function seek(t) {
+    clock = Math.max(0, Math.min(TOTAL, t));
+    if (playing) lastTick = performance.now();
+    else playBtn.textContent = '▶ Play';
+    render();
+  }
+
+  playBtn.addEventListener('click', () => playing ? stop() : play());
+  prevBtn.addEventListener('click', () => seek(scenes[Math.max(0, activeIdx - 1)].t));
+  nextBtn.addEventListener('click', () => seek(scenes[Math.min(scenes.length - 1, activeIdx + 1)].t));
+  timeline.addEventListener('click', e => {
+    const r = timeline.getBoundingClientRect();
+    seek((e.clientX - r.left) / r.width * TOTAL);
+  });
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.code === 'Space') { e.preventDefault(); playing ? stop() : play(); }
+    if (e.key === 'ArrowRight') nextBtn.click();
+    if (e.key === 'ArrowLeft') prevBtn.click();
+  });
+
+  render();
+</script>

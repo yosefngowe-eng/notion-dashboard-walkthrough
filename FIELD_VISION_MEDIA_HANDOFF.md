@@ -1,112 +1,149 @@
-# Field Vision Media Handoff: ISE + Athlete Classroom Editing Systems
+# Field Vision Media Handoff: ISE + Athlete Classroom Editing System
 
-Prepared Nov 22, 2026. Scope: branding + carousels in Canva, plus the footage-to-edit system that feeds them.
-Source: Canva account + Notion workspace (read-only scan). Nothing was changed.
+Prepared Nov 22, 2026. Source: Canva, Notion, ISE Media Hub (read-only scan). INSPIRE. SUCCESS. EARLY.
+
+How footage becomes clips, player products, batch content, long form, shorts, carousels and artifacts.
 
 ---
 
-## 1. Read this first (gates)
+## 1. The system in one picture
 
-- **Minors gate.** Nothing with a player's face or name posts without the guardian's written permission. Cutouts and highlights live in the player's own folder. No minor's face on a cover unless media-cleared.
-- **Lanes stay separate.** ISE, Athlete Classroom and Yosef personal are three looks. Do not mix logos, colors, or fonts between them.
-- **Reference-only material.** The saved-post guides (Gannon Meyer carousel, etc.) are structure references. Footage, words, numbers and CTAs belong to the original creators. Never repeat their stats as ours.
-- **Proof slides use only numbers we can show** from our own accounts or documents.
+| 1 Capture | 2 File | 3 Mark | 4 Cut | 5 Brand | 6 Deliver |
+|---|---|---|---|---|---|
+| Sony a7S III, DJI Osmo Nano, helmet cam | Upload inbox, sort by real clock time | Log plays by jersey #, rate clips | Per player, per game, per event | Canva templates, CapCut preset | Player pack, post, sell |
 
-## 2. Brand looks (carousel/editing rules)
+**The idea:** shoot once, file once, mark once, then reuse the same marked clip for a player product, a short, a carousel, a recap and a gallery page. Marking is the step that turns raw footage into inventory.
 
-| Element | Athlete Classroom | ISE Lacrosse | Yosef personal |
-|---|---|---|---|
-| Header type | White, bold condensed caps | White, bold condensed caps | White, DM Sans Bold |
-| Key-word color | Yellow `#FFD400` | Pink `#F2388A` | Red `#EE272A` or yellow `#E8CE35` (one per slide) |
-| Background | Black, or dark real photo + black card | Real field/venue photo + dark card | Charcoal `#545454` card on real photo |
-| Aside bubble | White, handwriting font | White, pink tail/outline | White, DM Sans Italic |
-| Thread line (bottom) | Yellow | Pink | Yellow `#E8CE35` |
-| Tagline (ISE) | "INSPIRE. SUCCESS. EARLY." | | |
+## 2. How each stage works
 
-Canvas 1080x1350 (4:5). Margins: 6% left/right, 8% top. Keep the bottom 7% clear (thread line + IG UI).
+### Capture and file (Drive: ISE Media Hub)
 
-## 3. Canva assets (the system)
+- Path: `event > day > game > camera`. Game folders sort in playing order: `start time _ grad year _ vs _ opponent _ result _ field`.
+- Cards go to `00_UPLOAD-INBOX`, then get filed by the clock on the clip into `01_RAW/Name_Camera`.
+- File names lead with real time, e.g. `142739_A7S3-C1600_game.MP4`. Griffin's camera runs 11 h 07 min 27.5 s behind, so names use real time, synced to the DJI by sound. This is what makes multi-camera sync possible.
+- 720p proxies sit beside DJI originals so edits stay fast.
 
-**Brand Kit:** `kAGT-YyEOGA` (AthleteClassroom Canva Brand Kit). Open items on it: confirm display name, colors vs the table above, approved fonts, logo variants and safe space.
+### Where edits live
 
-**Carousel templates / designs**
-
-| Asset | Canva ID | Use |
-|---|---|---|
-| Carousel template (AthleteClassroom, from reference) | `DAHZKqfAoe0` | Cover page only. Resize to 1080x1350 first (it is 1080x1440). Swap stock photos for our own. Duplicate for pages 2-10. |
-| ISE - Why Join ISE 2026-27 (EDITABLE v2) | `DAHZfeicj8c` | 22-page ISE carousel, current editable master. |
-| ISE - Why Join (20-page carousel) | `DAHZe-USteY` | Earlier 20-page version. |
-| ISE - Why Join (EDITABLE, magic layers) | `DAHZfOYYsz0` | Layered version. |
-| ISE Player Announcement Graphics | `DAG2YGlnLKA` | 85 pages, player announcement system. |
-
-**Brand templates (autofill/create-from)**
-
-| Template | ID |
+| Edit type | Folder |
 |---|---|
-| ISE Quote Template (two copies) | `EAHR6mrHP18`, `EAHR6T4dA0A` |
-| ISE Player Fundraiser Graphics (three copies) | `EAHDeJ9KbrI`, `EAHLRzH_a_k`, `EAHDeDpRJOk` |
-| ISE Fall 2026-27 Invitation (personalized) | `EAHR5mLuwNc` |
+| Cut of one game | that game's `02_EDITED` |
+| Recap or reel spanning games | `ZZ_EVENT-EDITS_recaps-reels` |
+| CapCut timelines (editors only) | `ZZ_TIMELINES_editors-only` |
+| Finished reel and carousel packs | `03_VLOG-CUTS` |
+| Testimonials | `04_PLAYER-TESTIMONIALS` |
+| Per player | `02_PLAYER-MEDIA-PACKAGES/<grad year>/#NN Firstname L/` |
 
-**Folder:** ISE Fall 2026 (`FAHSB7kFAFc`).
+## 3. Marking clips (the money step)
 
-**Clean-up needed:** several duplicate templates ("Copy of Copy of") and four throwaway "ISE WhyJoin p09 layers" test designs. Pick one canonical per type before handing off.
+Today, plays are logged per game with jersey number when visible (65 plays across 10 NJ games so far: goals, assists, saves, caused turnovers). Each game card in the ISE Media Hub gallery lists them, and a clip log sheet sits in each event's `00_EVENT-INFO`.
 
-## 4. Carousel recipe (10 slides)
+**Proposed marking standard** (adds to what exists; confirm before adopting). One row per clip:
+
+| Field | Example / values |
+|---|---|
+| Clip ID | real-time file name |
+| Game + camera | folder name + A7S3 / DJI / helmet |
+| Player | `#NN`, first name, last initial (`#--` if unknown) |
+| Play type | goal, assist, save, caused TO, ground ball, face-off, other |
+| Grade | A = hero shot, B = usable, C = reference only |
+| Use tag | SELL (player pack), SOCIAL (short), LONG (recap), CAROUSEL (still) |
+| Consent | cleared / pending / no. Nothing posts or ships on "pending". |
+| Status | marked, cut, branded, delivered |
+
+**Why it pays:** filter Player = #06 + Grade A + Consent cleared and you have that player's pack in minutes. Filter Grade A + SOCIAL across a weekend and you have a batch of shorts. The same row feeds the gallery page.
+
+## 4. Selling to players (player products)
+
+Every player gets one folder: `01_HIGHLIGHTS` (finished edits), `02_RAW-CUTOUTS` (his plays cut from game cameras), `03_PHOTOS/EDITED` and `ORIGINALS`. 117 players from the NJ and PLC rosters already have folders, grouped by grad year (2028s to 2033s-2034s).
+
+| Product idea | Built from | Status |
+|---|---|---|
+| Highlight reel (30-90 s) | Grade A clips tagged SELL | ISE already lists "elite highlight tapes" as available |
+| Raw cutout pack | All of the player's marked plays, uncut | Folder exists |
+| Photo set | Edited + originals | Folder exists |
+| Announcement / stat graphic | Canva "ISE Player Announcement Graphics" (85 pages) | Template exists |
+| Recruiting-profile bundle | Reel + photos + game film | Pairs with ISE recruiting consultation |
+| Event media-day content | Lax.com Media Day at Texas camp, delivered to families | Part of season package |
+
+**[FILL: confirm]** Pricing, who invoices, and whether packs are included in registration or sold separately are not set anywhere I found. I did not invent prices.
+
+> **Minors gate (hard stop).** Nothing posts or ships without the player's guardian permission. Keep a consent column on the clip log and a cleared-list per event. Internal filing and marking is fine; delivery and posting need the gate.
+
+## 5. Batch content
+
+| Batch | How |
+|---|---|
+| Player announcements / fundraiser graphics | Canva brand templates with data fields: autofill name, number, grad year, photo for each player in one pass. |
+| Weekend shorts | Filter Grade A + SOCIAL, apply one saved CapCut preset (S-Log3 order: convert, exposure, WB, color, saturation, look LUT last) so the weekend reads as one look. |
+| Captions | Same caption style across clips: word-by-word giant caps, key word in `#F2388A` (ISE) or `#FFD400` (Athlete Classroom). |
+| Carousels | Duplicate the 10-slide cover template, fill placeholders, export 1080x1350. |
+
+Canva autofill needs templates that have data fields; confirm each ISE template has them before promising batch runs.
+
+## 6. Long form vs short vs carousel (one shoot, many outputs)
+
+| | Short (reel) | Long form | Carousel (1080x1350) |
+|---|---|---|---|
+| **Source** | One Grade A play, 7-20 s | Full game or event, several cameras synced | Stills + clips in a card |
+| **Examples** | Goal, save, helmet-cam moment, giant-word hook | Event recap, vlog cut, testimonial, coach talk | "How a tournament weekend runs", Why Join ISE |
+| **Folder** | `03_VLOG-CUTS` | `ZZ_EVENT-EDITS_recaps-reels` | `03_VLOG-CUTS` + Canva |
+| **Brand** | Caption style + preset | Title card + preset | Canva template look |
+
+### Carousel recipe (10 slides)
 
 1. Hook: 5-7 word promise, real photo, swipe cue.
 2. Promise + proof (our footage or a real document).
-3. Map: "there are N parts" list.
+3. Map: "there are N parts".
 4. Step 1. 5. Step 2.
-6. Mid CTA (save / share with team parents / follow for part 2), then "keep swiping".
+6. Mid CTA (save / share with team parents), then "keep swiping".
 7-9. Steps 3-5.
 10. Recap + one CTA.
 
-Each step slide = numbered step name in key color + 1-3 lines + a photo/screen as proof + a handwritten aside. Skeleton PNGs live in Notion (page below). Delete the yellow role tags on skeletons before posting.
+Keep text out of the bottom 7% and 6% side margins.
 
-## 5. Footage-to-edit system (Drive)
+## 7. Artifacts (pages people can open)
 
-Hub: Google Drive **ISE Media Hub** (map in Notion: "ISE Media Hub: where everything lives").
+- **ISE Media Hub gallery** (exists): every game with frame, cameras, upload state and logged plays, plus player folders and a folder tour.
+- **Notion Media Hub page** (exists): folder map and filing rules.
+- **Proposed: per-player delivery page.** Private page per player showing reel, cutouts and photos, shown only when consent = cleared.
+- **Proposed: clip-log dashboard.** Counts by status, grade and use tag, so you can see what is ready to sell.
+- **Proposed: weekend content calendar.** Which shorts, carousels and recaps drop on which day.
 
-- Path: event > day > game > camera. Game folders: `start time _ grad year _ vs _ opponent _ result _ field`.
-- Cards go to `00_UPLOAD-INBOX`, then get filed by real clock time into `01_RAW/Name_Camera`.
-- Edits of one game: that game's `02_EDITED`. Multi-game edits: `ZZ_EVENT-EDITS_recaps-reels`. CapCut timelines: `ZZ_TIMELINES_editors-only`.
-- Player packages: `02_PLAYER-MEDIA-PACKAGES/<grad year>/#NN Firstname L/` with `01_HIGHLIGHTS`, `02_RAW-CUTOUTS`, `03_PHOTOS`.
-- Finished carousel/reel packs: `03_VLOG-CUTS`. Do not post from `99_ARCHIVE`.
-- Known quirk: Griffin's camera clock runs 11 h 07 min 27.5 s behind. File names use real time, synced to the DJI by sound.
+## 8. Brand rules
 
-## 6. Editing techniques already documented (Notion, reference sheets)
+| | Athlete Classroom | ISE Lacrosse |
+|---|---|---|
+| Header | White bold condensed caps | White bold condensed caps |
+| Key word | Yellow `#FFD400` | Pink `#F2388A` |
+| Background | Black or dark real photo | Real field/venue photo + dark card |
+| Thread line | Yellow | Pink |
+| Tagline | - | INSPIRE. SUCCESS. EARLY. |
 
-- Word-by-word giant captions behind the speaker (cutout layer over caption layer).
-- S-Log3 grade order in CapCut: conversion > exposure > WB > color > saturation > look LUT last. Save as preset. Values still `[to be set by Max]`.
-- Perspective text on surfaces (needs Higgsfield connector; test on one 10 s clip first).
-- Title-face test reel: condensed caps vs `#FFD400` on black.
+Three lanes stay separate: ISE, Athlete Classroom, Yosef personal. Reference posts from other creators are structure only; never reuse their words, footage or numbers.
 
-## 7. Field Vision Media logo and branding: what is missing
+## 9. Canva assets
 
-- **No Field Vision Media logo file was found** in the Canva Brand Kit, templates, designs or Notion brand pages I scanned. Upload it to Canva first.
-- Decide the lockup: "Produced by Field Vision Media" credit line (small, bottom-left, outside the 7% thread zone) vs white-label (no credit). White-label permission is an open item (see below).
-- Suggested: add one reusable logo sticker + one end-slide credit slide to each brand template so FVM never needs to rebuild branding per post.
+| Asset | ID |
+|---|---|
+| Brand Kit (AthleteClassroom) | `kAGT-YyEOGA` |
+| Carousel template (cover only, resize to 1080x1350) | `DAHZKqfAoe0` |
+| ISE Why Join 2026-27, EDITABLE v2 (22 pages) | `DAHZfeicj8c` |
+| ISE Player Announcement Graphics (85 pages) | `DAG2YGlnLKA` |
+| ISE Quote Template | `EAHR6mrHP18`, `EAHR6T4dA0A` |
+| ISE Player Fundraiser Graphics | `EAHDeJ9KbrI`, `EAHLRzH_a_k`, `EAHDeDpRJOk` |
+| ISE Fall 2026-27 Invitation (personalized) | `EAHR5mLuwNc` |
+| Folder: ISE Fall 2026 | `FAHSB7kFAFc` |
 
-## 8. Notion pointers
+Clean-up: duplicate "Copy of" templates and four throwaway "ISE WhyJoin p09 layers" designs. Pick one canonical per type.
 
-- ISE Media Hub: where everything lives
-- Carousel and technique guides from saved posts (Oct 26, 2026)
-- AthleteClassroom Canva Brand Kit (Canva Source Kits database)
-- Athlete Brand Locker Template (slide covers 01-08+)
-- Content HQ - Athlete Classroom
+## 10. Before Field Vision Media gets access
 
-## 9. Access to give Field Vision Media
+- ☐ **Logo:** no Field Vision Media logo found in Canva or Notion. Upload it; add a logo sticker and an end-slide credit to each template.
+- ☐ **Scope, rate, usage rights, white-label permission:** unconfirmed in Notion.
+- ☐ **Confidentiality:** the Why Join deck holds unreleased schedule and pricing.
+- ☐ **Access level:** start with view links, "create from" template links and one shared folder. No edit access to the Brand Kit, player packages or archive.
+- ☐ **Clean up templates:** one canonical per type; archive copies and test designs.
+- ☐ **Consent list:** guardian permissions for every player in Field Vision Media edits.
 
-Recommended minimum: Canva **view links** + brand-template "create from" links + one shared FVM folder; Drive access to `03_VLOG-CUTS` and the specific event folders they edit. Do not give edit access to the Brand Kit, the player packages, or `99_ARCHIVE` until the open items below are closed.
-
-## 10. Open items before sharing
-
-- ☐ Written scope, rate and usage rights for Field Vision Media (Notion shows these as unconfirmed).
-- ☐ White-label permission: yes/no.
-- ☐ Confidentiality terms for rosters, schedules and unreleased pricing inside the Why Join deck.
-- ☐ Logo file + safe-space rules.
-- ☐ Approved fonts/colors confirmed in the Brand Kit.
-- ☐ One canonical template per type; archive the copies.
-- ☐ Guardian-permission list for any player appearing in FVM-edited posts.
-
-Done looks like: FVM can open one template, drop in event footage from the hub, apply the right brand look with their logo, and export a 1080x1350 carousel without asking a question.
+**Done looks like:** Field Vision Media opens the clip log, filters one player or one weekend, cuts from marked clips, applies the right brand look with their logo, and delivers a pack or batch with consent already checked.

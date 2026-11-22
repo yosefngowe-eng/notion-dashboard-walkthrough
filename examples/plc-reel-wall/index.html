@@ -1,0 +1,203 @@
+<title>PLC Reel Wall</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout concept: dark review wall. Banner + tabs on top, numbered cards (C01...) in a grid,
+     each card = preview, caption button, Drive link. Pink is the ISE lane accent. */
+  :root{
+    --bg:#0b0b0c; --surface:#151517; --surface2:#1e1e21; --fg:#f4f2ee; --muted:#9c9ca5; --line:#2b2b30;
+    --accent:#F2388A; --accent-ink:#ffffff; --good:#3cc47f; --warn:#e6a93a;
+    --display:"Oswald","Arial Narrow",Impact,sans-serif;
+    --body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+    color-scheme:dark;
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --bg:#f3f2ef; --surface:#ffffff; --surface2:#ebeae6; --fg:#141416; --muted:#5f5f68; --line:#d9d8d2;
+      --accent:#D81B6A; --accent-ink:#ffffff; --good:#17804a; --warn:#9a6200; color-scheme:light;
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#f3f2ef; --surface:#ffffff; --surface2:#ebeae6; --fg:#141416; --muted:#5f5f68; --line:#d9d8d2;
+    --accent:#D81B6A; --accent-ink:#ffffff; --good:#17804a; --warn:#9a6200; color-scheme:light;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--fg);font-family:var(--body);line-height:1.45;
+       padding-block:28px 56px;
+       padding-left:max(16px,env(safe-area-inset-left,0px));
+       padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .wrap{max-width:1180px;margin:0 auto}
+  .eyebrow{font:500 .74rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+  h1{font:700 clamp(2.2rem,7vw,3.6rem)/.98 var(--display);text-transform:uppercase;letter-spacing:-.005em;margin:0 0 10px;text-wrap:balance}
+  .flag{display:inline-block;font:500 .7rem var(--mono);letter-spacing:.12em;text-transform:uppercase;
+        border:1px solid var(--accent);color:var(--accent);padding:2px 8px;border-radius:3px;vertical-align:middle;margin-left:10px}
+  .lead{margin:0 0 4px;font-size:1.02rem}
+  .sub{margin:0;color:var(--muted);font-size:.92rem}
+  .sub a{color:var(--fg);text-underline-offset:3px}
+  .bar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin:22px 0 18px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap}
+  .tab{font:500 .8rem var(--mono);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;
+       background:transparent;color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:8px 16px;min-height:40px}
+  .tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .count{font:400 .8rem var(--mono);color:var(--muted)}
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));align-items:start}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:0;display:flex;flex-direction:column}
+  .top{display:flex;justify-content:space-between;align-items:center;padding:10px 12px}
+  .cid{font:500 .78rem var(--mono);letter-spacing:.08em}
+  .chip{font:500 .68rem var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid currentColor}
+  .chip.approved{color:var(--good)} .chip.review{color:var(--warn)}
+  .media{background:#000;position:relative}
+  .media video{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;background:#000}
+  .track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .track::-webkit-scrollbar{display:none}
+  .track img{flex:0 0 100%;width:100%;aspect-ratio:4/5;object-fit:cover;scroll-snap-align:center;display:block}
+  .nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:0;cursor:pointer;
+       background:rgba(0,0,0,.6);color:#fff;font-size:1.2rem;line-height:1}
+  .nav.prev{left:8px} .nav.next{right:8px}
+  .pos{position:absolute;right:10px;bottom:10px;font:500 .72rem var(--mono);background:rgba(0,0,0,.65);color:#fff;padding:2px 8px;border-radius:999px}
+  .body{padding:12px;display:grid;gap:6px}
+  h2{font:700 1.25rem/1.05 var(--display);text-transform:uppercase;margin:0;text-wrap:balance}
+  .who{font:400 .78rem var(--mono);color:var(--accent);margin:0}
+  .game,.dur{font-size:.86rem;color:var(--muted);margin:0}
+  .acts{display:flex;gap:8px;padding:0 12px 12px;flex-wrap:wrap}
+  .btn{flex:1 1 120px;font:700 .74rem var(--mono);letter-spacing:.1em;text-transform:uppercase;text-align:center;text-decoration:none;cursor:pointer;
+       border:1px solid var(--fg);background:transparent;color:var(--fg);border-radius:6px;padding:10px 12px;min-height:42px}
+  .btn.main{background:var(--fg);color:var(--bg)}
+  .cap{grid-column:1/-1;width:100%;margin:0 12px 12px;max-width:calc(100% - 24px);background:var(--surface2);color:var(--fg);border:1px solid var(--line);border-radius:6px;font:400 .85rem var(--body);padding:8px;min-height:84px}
+  .held{margin:26px 0 0;padding:12px 14px;border:1px dashed var(--line);border-radius:8px;color:var(--muted);font-size:.9rem}
+  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);
+         font:500 .82rem var(--mono);padding:10px 16px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s}
+  .toast.on{opacity:1}
+  .empty{padding:40px 0;color:var(--muted)}
+  a:focus-visible,button:focus-visible,video:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">ISE National &middot; PLC Fall Championships &middot; Naples, FL</p>
+    <h1>PLC Reel Wall <span class="flag">Review only</span></h1>
+    <p class="lead">Nothing posted. Yosef approves each piece.</p>
+    <p class="sub" id="meta">Loading pieces&hellip;</p>
+  </header>
+
+  <div class="bar">
+    <div class="tabs" role="tablist" aria-label="Filter pieces">
+      <button class="tab" role="tab" data-f="all" aria-selected="true" id="t-all">All</button>
+      <button class="tab" role="tab" data-f="reel" aria-selected="false" id="t-reels">Reels</button>
+      <button class="tab" role="tab" data-f="carousel" aria-selected="false" id="t-carousels">Carousels</button>
+    </div>
+    <span class="count" id="count"></span>
+  </div>
+
+  <main class="grid" id="grid" aria-live="polite"></main>
+  <p class="held" id="held" hidden></p>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  var grid=document.getElementById('grid'), toastEl=document.getElementById('toast');
+  var clips=[], filter='all', io=null;
+
+  function el(tag,cls,text){var e=document.createElement(tag); if(cls)e.className=cls; if(text!=null)e.textContent=text; return e;}
+  function toast(msg){toastEl.textContent=msg; toastEl.classList.add('on'); clearTimeout(toast.t); toast.t=setTimeout(function(){toastEl.classList.remove('on')},1800);}
+
+  function copyCaption(text,card){
+    var done=function(){toast('Caption copied')};
+    var fallback=function(){
+      var ta=card.querySelector('.cap');
+      if(!ta){ta=el('textarea','cap'); ta.readOnly=true; ta.value=text; ta.setAttribute('aria-label','Caption, select and copy'); card.appendChild(ta);}
+      ta.focus(); ta.select(); toast('Select the text and copy');
+    };
+    try{ navigator.clipboard.writeText(text).then(done,fallback); }catch(e){ fallback(); }
+  }
+
+  function card(c){
+    var a=el('article','card'); a.dataset.kind=c.kind;
+    var top=el('div','top');
+    top.appendChild(el('span','cid',c.id));
+    top.appendChild(el('span','chip '+(c.status==='approved'?'approved':'review'),c.status));
+    a.appendChild(top);
+
+    var media=el('div','media');
+    if(c.kind==='reel'){
+      var v=document.createElement('video');
+      v.controls=true; v.setAttribute('playsinline',''); v.preload='metadata'; v.poster=c.poster;
+      v.setAttribute('aria-label',c.player+' '+c.play+', '+c.game);
+      v.dataset.src=c.file; media.appendChild(v);
+    } else {
+      var tr=el('div','track'); tr.tabIndex=0; tr.setAttribute('aria-label','Carousel slides, swipe or use arrow keys');
+      c.slides.forEach(function(s,i){var im=document.createElement('img'); im.src=s; im.alt='Slide '+(i+1)+' of '+c.slides.length; im.loading='lazy'; tr.appendChild(im);});
+      var pos=el('span','pos','1 / '+c.slides.length);
+      var prev=el('button','nav prev','\u2039'); prev.setAttribute('aria-label','Previous slide');
+      var next=el('button','nav next','\u203A'); next.setAttribute('aria-label','Next slide');
+      prev.onclick=function(){tr.scrollBy({left:-tr.clientWidth,behavior:'smooth'})};
+      next.onclick=function(){tr.scrollBy({left:tr.clientWidth,behavior:'smooth'})};
+      tr.addEventListener('scroll',function(){pos.textContent=(Math.round(tr.scrollLeft/tr.clientWidth)+1)+' / '+c.slides.length});
+      media.appendChild(tr); media.appendChild(prev); media.appendChild(next); media.appendChild(pos);
+    }
+    a.appendChild(media);
+
+    var b=el('div','body');
+    b.appendChild(el('h2',null,c.title));
+    b.appendChild(el('p','who',c.player+' \u00b7 '+c.team));
+    b.appendChild(el('p','game',c.game));
+    b.appendChild(el('p','dur',c.kind==='reel'?(c.secs+' s of video \u00b7 '+c.play):(c.slides.length+' slides \u00b7 '+c.play)));
+    a.appendChild(b);
+
+    var acts=el('div','acts');
+    var copy=el('button','btn main','Copy caption'); copy.type='button';
+    copy.onclick=function(){copyCaption(c.caption,a)};
+    var dr=el('a','btn','Drive'); dr.href=c.drive; dr.target='_blank'; dr.rel='noopener';
+    acts.appendChild(copy); acts.appendChild(dr);
+    a.appendChild(acts);
+    return a;
+  }
+
+  function lazyVideos(){
+    var vids=grid.querySelectorAll('video[data-src]');
+    if(!('IntersectionObserver' in window)){vids.forEach(function(v){v.src=v.dataset.src;v.removeAttribute('data-src')});return;}
+    if(io) io.disconnect();
+    io=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){var v=e.target; v.src=v.dataset.src; v.removeAttribute('data-src'); io.unobserve(v);}
+    })},{rootMargin:'300px'});
+    vids.forEach(function(v){io.observe(v)});
+  }
+
+  function render(){
+    grid.textContent='';
+    var shown=clips.filter(function(c){return filter==='all'||c.kind===filter});
+    if(!shown.length){grid.appendChild(el('p','empty','No cleared pieces in this tab yet.'));}
+    shown.forEach(function(c){grid.appendChild(card(c))});
+    document.getElementById('count').textContent=shown.length+' shown';
+    document.querySelectorAll('.tab').forEach(function(t){t.setAttribute('aria-selected',String(t.dataset.f===filter))});
+    lazyVideos();
+  }
+
+  function setFilter(f,push){
+    filter=f; render();
+    var h={all:'all',reel:'reels',carousel:'carousels'}[f];
+    if(push && location.hash!=='#'+h){location.hash=h;}
+  }
+  document.querySelectorAll('.tab').forEach(function(t){t.onclick=function(){setFilter(t.dataset.f,true)}});
+  function fromHash(){var h=location.hash.slice(1); setFilter(h==='reels'?'reel':h==='carousels'?'carousel':'all',false);}
+  window.addEventListener('hashchange',fromHash);
+
+  // Only pieces with consent "cleared" ship to this page. Held-back pieces are a count, never a row.
+  Promise.all([
+    fetch('clips.json').then(function(r){return r.text()}),
+    fetch('meta.json').then(function(r){return r.json()})
+  ]).then(function(res){
+    clips=res[0].trim().split('\n').map(function(l){return JSON.parse(l)}).filter(function(c){return c.consent==='cleared'});
+    var reels=clips.filter(function(c){return c.kind==='reel'}).length, cars=clips.length-reels;
+    document.getElementById('meta').textContent=reels+' reels + '+cars+' carousel'+(cars===1?'':'s')+' \u00b7 EXAMPLE data and placeholder media \u00b7 updated '+res[1].updated;
+    if(res[1].held_back){var h=document.getElementById('held'); h.hidden=false;
+      h.textContent=res[1].held_back+' more pieces are held back until guardian consent is cleared. They are not on this page.';}
+    fromHash();
+  }).catch(function(){
+    document.getElementById('meta').textContent='Could not load the pieces. Reload the page.';
+  });
+})();
+</script>

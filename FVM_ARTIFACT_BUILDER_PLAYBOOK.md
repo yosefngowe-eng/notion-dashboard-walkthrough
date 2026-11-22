@@ -667,3 +667,23 @@ What to copy from these: yellow role tag top-left (delete before posting), conde
 ![Screenshot of the PLC reels artifact attempt: Drive download failed because files over 10 MB cannot be downloaded; the page cannot play a Drive player; the agent asks for the files to be attached or the folder added on the Mac.](reference-photos/drive_limit_screenshot.jpg){width=55%}
 
 This is the exact situation Section 6 solves: attach the files or add the folder on the Mac, compress to <= 12 MB, publish the video files with the page.
+
+---
+
+# 15. Working example (copy this)
+
+A finished artifact built to this playbook: **PLC Reel Wall**, https://claude.ai/artifact/4WqUfp17aiutTTGZjpuarg (private; share it from the Share menu). Source is in the repo at `examples/plc-reel-wall/`.
+
+| File | Role |
+|---|---|
+| `index.html` | The page: tokens, tabs (hash routed), card renderer, lazy video, copy-caption with fallback |
+| `clips.json` | One cleared piece per line. **Only `consent: "cleared"` rows are shipped.** |
+| `meta.json` | `held_back` count and updated date. Held-back pieces appear only as a number |
+| `media/` | Compressed 9:16 reels + poster frames (made with `compress_reel.sh`) |
+| `slides/` | 4:5 carousel slides |
+
+How it follows the rules: dark-first tokens with a light mode, ISE pink accent, review-only banner ("Nothing posted. Yosef approves each piece."), numbered cards C01-C05 with status chips, COPY CAPTION and DRIVE buttons, 9:16 videos with posters loaded lazily, 4:5 carousel with arrows and a counter, no horizontal scroll at 400px.
+
+**Data and media in it are placeholders** (`#00 Example P`, test-pattern reels, template slides). Swap `clips.json` and `media/` for real cleared pieces and republish to the same URL.
+
+Next upgrades (need capabilities, see Section 4): an **Approve** button per card (`db` with owner-only write), per-card comments (`comments`), and live consent status from the clip log (`db`).

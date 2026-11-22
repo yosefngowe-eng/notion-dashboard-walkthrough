@@ -567,3 +567,103 @@ ASSUMPTIONS / [FILL]
 - [ ] Access plan: view links, "create from" template links, one shared folder. No edit rights to the Brand Kit, player packages or archive.
 
 **Done looks like:** FVM opens the clip log, filters a player or a weekend, runs the pipeline, and publishes a branded, consent-checked artifact with working video, with no questions asked.
+
+---
+
+# 13. References (open these before building)
+
+## 13.1 The gallery pattern Yosef wants
+
+Yosef's own direction (from his Claude session): "need to be way more organized and easier to read, how Yosef would like it, artifact gallery style." The reference is a review-only gallery page built for a player-story series. Copy the **pattern**, not that content:
+
+| Element | Spec |
+|---|---|
+| Banner | Series name in condensed caps, small "REVIEW ONLY" label, one line: "Nothing posted. Yosef approves each piece." |
+| Counts | "18 reels + 9 carousels" under the title, plus a "Google Drive folder" link |
+| Tabs | ALL / REELS / CAROUSELS pills; active pill in the lane accent (pink) |
+| Cards | Grid of cards numbered `C01`, `C02`, ... Each card has a slide/video preview, a title in caps, slide count + seconds of video, a 2-line description with "more", and two buttons: **COPY CAPTION** and **DRIVE** |
+| Carousel preview | 4:5 slides, left/right arrows, "1 / 5" counter, "arrows or swipe through the slides" hint |
+| Tone | Dark ground, white condensed headlines, pink accent, mono labels |
+
+Build every FVM gallery this way: organized by tab, one card per deliverable, each card self-contained (preview + caption + source link), and a clear "approved / not posted" state. Copy buttons use `navigator.clipboard.writeText` inside the click handler with a fallback (Section 2).
+
+## 13.2 Notion pages
+
+| Page | What it holds |
+|---|---|
+| ISE Media Hub: where everything lives | Folder map, filing rules, status, Finder screenshots (https://app.notion.com/p/42015fffbb5e81b08f13cff7770a09ee) |
+| Carousel and technique guides from saved posts (Oct 26, 2026) | Carousel anatomy, 10-slide template, 3 brand looks, 5 technique sheets (https://app.notion.com/p/40615fffbb5e8100a228c52469d1e144) |
+| AthleteClassroom Canva Brand Kit | Brand Kit record and open checklist (https://app.notion.com/p/40615fffbb5e81dfa218eb61eab4861e) |
+| Brand Locker (Notion mirror of the TEAM APP layer) | Brand rules and recipes (https://app.notion.com/p/40615fffbb5e81cdab36ccb4636ca074) |
+| Content HQ - Athlete Classroom | Lane rules and consent notes (https://app.notion.com/p/3c815fffbb5e81c78bf2ca57f2819fba) |
+| Field Vision Media (Crew & Contributors) | Partner record; scope, rate, usage rights still open (https://app.notion.com/p/40615fffbb5e81bcb9e1e66833d911f6) |
+
+## 13.3 Canva designs (view links)
+
+| Design | Link |
+|---|---|
+| Carousel template (AthleteClassroom, from reference) | https://www.canva.com/d/WueTocqT_KKQLfE |
+| ISE - Why Join ISE 2026-27 (EDITABLE v2) | https://www.canva.com/d/lHnegKi0IvAGK9S |
+| ISE Player Announcement Graphics | https://www.canva.com/d/44Gbknt3mNMx1KB |
+| Reference frames 9:16 (AI stand-in, not for posting) | https://www.canva.com/d/Jd2BNSYn2MQNxOR |
+| Reference frames 16:9 (AI stand-in, not for posting) | https://www.canva.com/d/-5X7zZG2PXyT4Bv |
+
+## 13.4 Instagram references (structure only, never reuse words, footage or numbers)
+
+**Field Vision Media's own posts saved as style references**
+
+| Post | URL |
+|---|---|
+| ISE at Pinnacle recap | https://www.instagram.com/p/DdZbV7NTCrE/ |
+| Funny sideline moment | https://www.instagram.com/p/C5rwnDnNbMz/ |
+| PLL two-man game highlight | https://www.instagram.com/p/DNTgAJdxaX1/ |
+| Committed player steal clip | https://www.instagram.com/p/C4yadjGxDle/ |
+| PLL highlight from his knees | https://www.instagram.com/p/Dav_3K9vflc/ |
+| Around the world at demand | https://www.instagram.com/p/DeXOmy_PdBn/ |
+| Flexing after crowd chirp | https://www.instagram.com/p/C4R1uLrtK7e/ |
+| Championship buzzer beater | https://www.instagram.com/p/C7g8in4sWQV/ |
+
+**Technique references**
+
+| Technique | URL |
+|---|---|
+| Viral carousel with Claude (14-slide structure) | https://www.instagram.com/p/DevY6-ogAEe/ |
+| Perspective text effect | https://www.instagram.com/p/DegmJQFC1eP/ |
+| S-Log3 to color in CapCut | https://www.instagram.com/p/Dezyb6tRa3K/ |
+| Cinematic fonts | https://www.instagram.com/p/DdZTN39AmTJ/ |
+| Giant word-by-word captions | https://www.instagram.com/p/DdXEYhSDEWc/ |
+
+## 13.5 Player numbers (internal)
+
+A jersey map built from the ISE roster email of Nov 21, 2026 (71 players, four teams) lives in a **separate internal file**, `PLC_JERSEY_MAP.pdf`. It uses first name + last initial only and flags conflicts and open numbers. Rules for using it:
+
+- Use it only to label clips (`#NN Firstname L`). It never goes into a public or shared artifact.
+- A clip still needs `consent: cleared` before it renders.
+- Do not label a clip by number when the map says `check` or `needed`; ask ISE first.
+- **Two of the PLC reel files in the failed build do not match the roster:** "ISE 2032 #22" and "ISE 2033 #99". Neither number appears for those teams in the Nov 21 email. Confirm with ISE before delivering them.
+
+---
+
+# 14. Photos (visual references)
+
+These are layout references from the team's own Notion skeleton slides (placeholders, no real people), plus the failure screenshot. Do not use any photo of a player here; real player photos come only from the cleared clip log.
+
+## 14.1 Carousel skeleton: slide 1, hook (1080x1350)
+
+![Skeleton slide 1: hook. Black ground, condensed caps title with yellow key words, swipe cue, yellow thread line along the bottom.](reference-photos/skeleton_01.png){width=38%}
+
+## 14.2 Carousel skeleton: slide 6, mid CTA
+
+![Skeleton slide 6: mid CTA. Header band, white handwritten aside bubble, dashed asset box, yellow thread line with loop, slide counter 6/10.](reference-photos/skeleton_06.png){width=38%}
+
+## 14.3 Carousel skeleton: slide 10, recap + CTA
+
+![Skeleton slide 10: recap and one CTA, back to the cover card.](reference-photos/skeleton_10.png){width=38%}
+
+What to copy from these: yellow role tag top-left (delete before posting), condensed caps header with one yellow key phrase, handwritten aside bubble right of the header, a bordered asset frame in the middle, round white icon stickers on opposite corners, the continuous yellow thread line (y 93-100%) with a small loop, slide counter bottom right. For ISE, swap yellow `#FFD400` for pink `#F2388A`.
+
+## 14.4 The failure to avoid
+
+![Screenshot of the PLC reels artifact attempt: Drive download failed because files over 10 MB cannot be downloaded; the page cannot play a Drive player; the agent asks for the files to be attached or the folder added on the Mac.](reference-photos/drive_limit_screenshot.jpg){width=55%}
+
+This is the exact situation Section 6 solves: attach the files or add the folder on the Mac, compress to <= 12 MB, publish the video files with the page.
